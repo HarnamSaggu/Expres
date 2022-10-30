@@ -1,0 +1,145 @@
+Expres ====
+	Features/Overview ====
+		. variables
+		. arrays
+		.
+		. snippet
+		.
+		. if
+		.
+		. for
+		. while
+		.
+		. func
+		. 	(+recursion)
+
+		General Info ====
+			semicolons will be used for the end of "lines"
+
+		====
+
+		Variables ====
+			mutable variables
+			data type can be inferred
+			"
+			> variableName, value
+
+			> dataType: variableName
+			"
+
+			# PASS BY REFERENCE
+			# WEAKLY TYPED
+
+		Arrays ====
+			mutable arrays
+			data type is inferred
+			"
+			> arrayName[]
+
+			> dataType: arrayName[]
+
+			> arrayName[index], value
+			"
+
+			# PASS BY REFERENCE
+			# WEAKLY TYPED
+
+			and (like) kotlin intervals
+			"
+			> oneToTen, 1...10
+			> oneUpToTen, 1../10
+			"
+
+		====
+
+		Snippet ====
+			i will use snippets of code, complied code which can be stored under the data type snippet
+			"
+			> snippet: snippetName, {code}
+			"
+
+		====
+
+		If ====
+			just plain old ifs
+			"
+			if(boolean, {body}, ...)
+			"
+
+		====
+
+		For ====
+			both for like in java and kotlin
+			"
+			for(array, counterName, {body})
+
+			for(counterName, condition, variableChange, {body})
+			"
+
+		While ====
+			normal while
+			"
+			while(condition, {body})
+			"
+
+		====
+
+		Function ====
+			"
+			> functionName(dataType: parameterName, ...), {code}
+			"
+
+			the rest is TODO
+
+
+	Lexer & Parser init notes ====
+		Tokens ====
+			. KEYWORD, any string starting with letters which isn't a string literal   ####
+			. VARIABLE MUTATOR, ">" # ONLY IF AT THE START OF A 'LINE'                 ####
+			. COMMA, ","                                                               ####
+			. SEMICOLON, break ";"                                                     ####
+			. SNIPPET START, "{"                                                       ####
+			. SNIPPET END, "}"                                                         ####
+			. NUMBER, anything string not in a string literal starting with a digit    ####
+			. Operators ====
+				. Maths ====
+					. PLUS, "+"                                                          ####
+					. MINUS, "-"                                                         ####
+					. DIVIDE, "/"                                                        ####
+					. MULTIPLY, "*"                                                      ####
+					. MODULO, "%"                                                        ####
+					. POWER, "^"                                                         ####
+				. Logic ====
+					. EQUALS, "="                                                        ####
+					. LESS THAN, "<"                                                     ####
+					. GREATER THAN, ">"                                                  ####
+					. LESS EQUAL THAN, "<="                                              ####
+					. GREATER EQUAL THAN, ">="                                           ####
+					. NOT, "!"                                                           ####
+					. OR, "|"                                                            ####
+					. AND, "&"                                                           ####
+			. OPEN BRACKET, "("                                                        ####
+			. CLOSE BRACKET, ")"                                                       ####
+			. OPEN INDEX, "["                                                          ####
+			. CLOSE INDEX, "]"                                                         ####
+			. TYPE INDICATOR, ":"                                                      ####
+			. STRING LITERAL, """                                                      ####
+			
+		Feature conversions ====
+		   . variables -> [VARIABLE MUTATOR] [KEYWORD]
+		               -> [VARIABLE MUTATOR] [KEYWORD] [COMMA] [...additional tokens treated as value...]
+		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD]
+		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [COMMA] [...additional tokens treated as value...]
+
+       	. arrays    -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
+       	            -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
+       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [COMMA] [...additional tokens treated as value...]
+
+       	. snippet
+
+       	. if
+
+       	. for
+
+       	. while
+
