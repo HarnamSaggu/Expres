@@ -29,9 +29,8 @@ class Lexer(sourceCode: String) {
 
 			if (char() == '>') {
 				if (proChar() == '=') {
-					type = TokenType.GREATER_EQUAL_THAN
 					inc(2)
-					appendToken()
+					appendToken(tokenType = TokenType.GREATER_EQUAL_THAN)
 					continue
 				} else {
 					type = if (preChar() == ';') {
@@ -42,20 +41,10 @@ class Lexer(sourceCode: String) {
 				}
 			}
 
-			/*
-
-			match(TokenType.COMMA)
-
-			match(TokenType.SEMICOLON)
-
-			match(TokenType.SNIPPET_START)
-
-			match(TokenType.SNIPPET_END)
-
-			if (char().isDigit()) {
+			if (char()?.isDigit() == true) {
 				value = ""
 				var decimal = false
-				while (char().isDigit() || (!decimal && char() == '.')) {
+				while ((char()?.isDigit() == true) || (!decimal && char() == '.')) {
 					if (char() == '.') {
 						decimal = true
 					}
@@ -66,51 +55,20 @@ class Lexer(sourceCode: String) {
 				continue
 			}
 
-			match(TokenType.PLUS)
-
-			match(TokenType.MINUS)
-
-			match(TokenType.DIVIDE)
-
-			match(TokenType.MULTIPLY)
-
-			match(TokenType.MODULO)
-
-			match(TokenType.POWER)
-
-			match(TokenType.EQUALS)
-
 			if (char() == '<') {
 				if (proChar() == '=') {
 					inc(2)
 					appendToken(tokenType = TokenType.LESS_EQUAL_THAN)
+					continue
 				} else {
 					type = TokenType.LESS_THAN
 				}
 			}
-			
-			// GREATER (EQUAL) THAN DONE ABOVE
-
-			match(TokenType.NOT)
-
-			match(TokenType.OR)
-
-			match(TokenType.AND)
-
-			match(TokenType.OPEN_BRACKET)
-
-			match(TokenType.CLOSE_BRACKET)
-
-			match(TokenType.OPEN_INDEX)
-
-			match(TokenType.CLOSE_INDEX)
-
-			match(TokenType.TYPE_INDICATOR)
 
 			if (char() == '"') {
 				value = ""
 				inc()
-				while (char() != '"') {
+				while (char() != '"' && char() != null) {
 					if (char() == '\\') {
 						if (proChar()?.let { "\\\"".contains(it) } == true) {
 							inc()
@@ -127,11 +85,34 @@ class Lexer(sourceCode: String) {
 					value += char()
 					inc()
 				}
-				inc()
-				appendToken(tokenType = TokenType.STRING_LITERAL)
+				if (char() == null) {
+					value = null
+				} else {
+					inc()
+					appendToken(tokenType = TokenType.STRING_LITERAL)
+					continue
+				}
 			}
 
-			*/
+			match(TokenType.COMMA)
+			match(TokenType.SEMICOLON)
+			match(TokenType.SNIPPET_START)
+			match(TokenType.SNIPPET_END)
+			match(TokenType.PLUS)
+			match(TokenType.MINUS)
+			match(TokenType.DIVIDE)
+			match(TokenType.MULTIPLY)
+			match(TokenType.MODULO)
+			match(TokenType.POWER)
+			match(TokenType.EQUALS)
+			match(TokenType.NOT)
+			match(TokenType.OR)
+			match(TokenType.AND)
+			match(TokenType.OPEN_BRACKET)
+			match(TokenType.CLOSE_BRACKET)
+			match(TokenType.OPEN_INDEX)
+			match(TokenType.CLOSE_INDEX)
+			match(TokenType.TYPE_INDICATOR)
 
 			inc()
 			appendToken()
