@@ -16,6 +16,8 @@ fun main() {
         
         "1112345""qweqweqwe"asd
         
+        ""1... ../.../a
+        
     """.trimIndent()
     lex(sourceCode).also { println(it.size) }.forEach(::println)
 }

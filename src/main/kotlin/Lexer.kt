@@ -31,8 +31,7 @@ private class Lexer(sourceCode: String) {
 
 			if (char() == '>') {
 				if (proChar() == '=') {
-					inc(2)
-					appendToken(tokenType = TokenType.GREATER_EQUAL_THAN)
+					appendToken(tokenType = TokenType.GREATER_EQUAL_THAN, incAmount = 2)
 					continue
 				} else {
 					type = if (preChar() == ';') {
@@ -48,7 +47,11 @@ private class Lexer(sourceCode: String) {
 				var decimal = false
 				while ((char()?.isDigit() == true) || (!decimal && char() == '.')) {
 					if (char() == '.') {
-						decimal = true
+						if (proChar()?.isDigit() == true) {
+							decimal = true
+						} else {
+							break
+						}
 					}
 					value += char()
 					inc()
@@ -59,8 +62,7 @@ private class Lexer(sourceCode: String) {
 
 			if (char() == '<') {
 				if (proChar() == '=') {
-					inc(2)
-					appendToken(tokenType = TokenType.LESS_EQUAL_THAN)
+					appendToken(tokenType = TokenType.LESS_EQUAL_THAN, incAmount = 2)
 					continue
 				} else {
 					type = TokenType.LESS_THAN
@@ -90,27 +92,41 @@ private class Lexer(sourceCode: String) {
 				if (char() == null) {
 					value = null
 				} else {
-					inc()
-					appendToken(tokenType = TokenType.STRING_LITERAL)
+					appendToken(tokenType = TokenType.STRING_LITERAL, incAmount = 1)
 					continue
 				}
 			}
 
-				for (tokenType in TokenType.values()) {
-					if (!tokenType.complex) {
-						match(tokenType)
-					}
+			if (char() == '.' && proChar() == '.') {
+				val isInclusive = proChar(2) == '.'
+				val isExclusive = proChar(2) == '/'
+				if (isInclusive) {
+					type = TokenType.INCLUSIVE_INTERVAL
+				} else if (isExclusive) {
+					type = TokenType.EXCLUSIVE_INTERVAL
 				}
+				if (isInclusive || isExclusive) {
+					appendToken(incAmount = 3)
+					continue
+				}
+			}
 
-			inc()
-			appendToken()
+			for (tokenType in TokenType.values()) {
+				if (!tokenType.complex) {
+					match(tokenType)
+				}
+			}
+
+			appendToken(incAmount = 1)
 		}
 	}
 
 	fun tokens(): List<Token> = tokens.toList()
 
-	private fun appendToken(tokenType: TokenType = type, tokenValue: String? = value) =
+	private fun appendToken(tokenType: TokenType = type, tokenValue: String? = value, incAmount: Int = 0) {
+		inc(incAmount)
 		tokens.add(Token(tokenType, tokenValue))
+	}
 
 	private fun match(checkType: TokenType) {
 		type = if (char() == checkType.char) {
@@ -122,9 +138,9 @@ private class Lexer(sourceCode: String) {
 
 	private fun char(index: Int = pointer): Char? = if (index < code.length) code[index] else null
 
-	private fun preChar(): Char? = if (pointer == 0) null else code[pointer - 1]
+	private fun preChar(index: Int = 1): Char? = if (pointer == index - 1) null else code[pointer - index]
 
-	private fun proChar(): Char? = if (pointer + 1 < code.length) code[pointer + 1] else null
+	private fun proChar(index: Int = 1): Char? = if (pointer + index < code.length) code[pointer + index] else null
 
 	private fun inc(x: Int = 1) {
 		pointer += x
@@ -164,5 +180,7 @@ enum class TokenType(val char: Char?, val complex: Boolean) {
 	OPEN_INDEX('[', false),
 	CLOSE_INDEX(']', false),
 	TYPE_INDICATOR(':', false),
-	STRING_LITERAL('"', true)
+	STRING_LITERAL('"', true),
+	INCLUSIVE_INTERVAL(null, true),
+	EXCLUSIVE_INTERVAL(null, true)
 }
