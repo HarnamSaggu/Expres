@@ -112,8 +112,8 @@ private class Lexer(sourceCode: String) {
 			}
 
 			for (tokenType in TokenType.values()) {
-				if (!tokenType.complex) {
-					match(tokenType)
+				if (!tokenType.complex && char() == tokenType.char) {
+					type = tokenType
 				}
 			}
 
@@ -126,14 +126,6 @@ private class Lexer(sourceCode: String) {
 	private fun appendToken(tokenType: TokenType = type, tokenValue: String? = value, incAmount: Int = 0) {
 		inc(incAmount)
 		tokens.add(Token(tokenType, tokenValue))
-	}
-
-	private fun match(checkType: TokenType) {
-		type = if (char() == checkType.char) {
-			checkType
-		} else {
-			type
-		}
 	}
 
 	private fun char(index: Int = pointer): Char? = if (index < code.length) code[index] else null
