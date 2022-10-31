@@ -1,4 +1,6 @@
-class Lexer(sourceCode: String) {
+fun lex(sourceCode: String): List<Token> = Lexer(sourceCode).tokens().toList()
+
+private class Lexer(sourceCode: String) {
 	private val code: String
 	private var pointer = 0
 	private val tokens = mutableListOf<Token>()
@@ -94,25 +96,11 @@ class Lexer(sourceCode: String) {
 				}
 			}
 
-			match(TokenType.COMMA)
-			match(TokenType.SEMICOLON)
-			match(TokenType.SNIPPET_START)
-			match(TokenType.SNIPPET_END)
-			match(TokenType.PLUS)
-			match(TokenType.MINUS)
-			match(TokenType.DIVIDE)
-			match(TokenType.MULTIPLY)
-			match(TokenType.MODULO)
-			match(TokenType.POWER)
-			match(TokenType.EQUALS)
-			match(TokenType.NOT)
-			match(TokenType.OR)
-			match(TokenType.AND)
-			match(TokenType.OPEN_BRACKET)
-			match(TokenType.CLOSE_BRACKET)
-			match(TokenType.OPEN_INDEX)
-			match(TokenType.CLOSE_INDEX)
-			match(TokenType.TYPE_INDICATOR)
+				for (tokenType in TokenType.values()) {
+					if (!tokenType.complex) {
+						match(tokenType)
+					}
+				}
 
 			inc()
 			appendToken()
@@ -138,14 +126,8 @@ class Lexer(sourceCode: String) {
 
 	private fun proChar(): Char? = if (pointer + 1 < code.length) code[pointer + 1] else null
 
-	fun inc(x: Int = 1) {
+	private fun inc(x: Int = 1) {
 		pointer += x
-	}
-
-	fun dec() {
-		if (pointer > 0) {
-			pointer--
-		}
 	}
 }
 
@@ -154,33 +136,33 @@ data class Token(val type: TokenType, val value: String? = null) {
 		"[${type.name.replace('_', ' ')}${if (value != null) ", '$value'" else ""}]"
 }
 
-enum class TokenType(val char: Char?) {
-	UNDEFINED(null),
-	KEYWORD(null),
-	VARIABLE_MUTATOR('>'),
-	COMMA(','),
-	SEMICOLON(';'),
-	SNIPPET_START('{'),
-	SNIPPET_END('}'),
-	NUMBER(null),
-	PLUS('+'),
-	MINUS('-'),
-	DIVIDE('/'),
-	MULTIPLY('*'),
-	MODULO('%'),
-	POWER('^'),
-	EQUALS('='),
-	LESS_THAN('<'),
-	GREATER_THAN('>'),
-	LESS_EQUAL_THAN(null),
-	GREATER_EQUAL_THAN(null),
-	NOT('!'),
-	OR('|'),
-	AND('&'),
-	OPEN_BRACKET('('),
-	CLOSE_BRACKET(')'),
-	OPEN_INDEX('['),
-	CLOSE_INDEX(']'),
-	TYPE_INDICATOR(':'),
-	STRING_LITERAL(null)
+enum class TokenType(val char: Char?, val complex: Boolean) {
+	UNDEFINED(null, true),
+	KEYWORD(null, true),
+	VARIABLE_MUTATOR('>', true),
+	COMMA(',', false),
+	SEMICOLON(';', false),
+	SNIPPET_START('{', false),
+	SNIPPET_END('}', false),
+	NUMBER(null, true),
+	PLUS('+', false),
+	MINUS('-', false),
+	DIVIDE('/', false),
+	MULTIPLY('*', false),
+	MODULO('%', false),
+	POWER('^', false),
+	EQUALS('=', false),
+	LESS_THAN('<', true),
+	GREATER_THAN('>', true),
+	LESS_EQUAL_THAN(null, true),
+	GREATER_EQUAL_THAN(null, true),
+	NOT('!', false),
+	OR('|', false),
+	AND('&', false),
+	OPEN_BRACKET('(', false),
+	CLOSE_BRACKET(')', false),
+	OPEN_INDEX('[', false),
+	CLOSE_INDEX(']', false),
+	TYPE_INDICATOR(':', false),
+	STRING_LITERAL('"', true)
 }

@@ -1,5 +1,5 @@
 fun main() {
-    Lexer("""
+    val sourceCode = """
         Hello world,,, this is a test for the while loop;
         > varName;
         greater than next > >= > > ;>=;;;
@@ -8,7 +8,7 @@ fun main() {
         };}
         1234567890987651;
         123 8478 123 1.32 331231.123 231
-        23;;-+-+*///*** %% ^^^ 12^3^ =;=;="==<=*<;";>=;;>=>+ ;<<< !||||(&&;!>)[[]]][]:::;:::!
+        23;;-+-+*///*** %% ^^^ 12^3^ =;=;< < < <="==<=*<;";>=;;>=>+ ;<<< !||||(&&;!>)[[]]][]:::;:::!
         
         <"=">
         
@@ -16,5 +16,6 @@ fun main() {
         
         "1112345""qweqweqwe"asd
         
-    """.trimIndent()).tokens().also { println(it.size) }.forEach(::println)
+    """.trimIndent()
+    lex(sourceCode).also { println(it.size) }.forEach(::println)
 }
