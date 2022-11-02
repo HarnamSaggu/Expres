@@ -34,7 +34,7 @@ private class Lexer(sourceCode: String) {
 					appendToken(tokenType = TokenType.GREATER_EQUAL_THAN, incAmount = 2)
 					continue
 				} else {
-					type = if (preChar() == ';') {
+					type = if (preChar() == ';'|| preChar() == '{' || preChar() == null) {
 						TokenType.VARIABLE_MUTATOR
 					} else {
 						TokenType.GREATER_THAN
@@ -111,6 +111,16 @@ private class Lexer(sourceCode: String) {
 				}
 			}
 
+			if (char() == '#') {
+				value = ""
+				inc()
+				while (char() != ';' || char() != null) {
+					value += char()
+					inc()
+				}
+				appendToken(tokenType = TokenType.COMMENT)
+			}
+
 			for (tokenType in TokenType.values()) {
 				if (!tokenType.complex && char() == tokenType.char) {
 					type = tokenType
@@ -130,7 +140,22 @@ private class Lexer(sourceCode: String) {
 
 	private fun char(index: Int = pointer): Char? = if (index < code.length) code[index] else null
 
-	private fun preChar(index: Int = 1): Char? = if (pointer == index - 1) null else code[pointer - index]
+	// TODO make preChar() ignore whitespace
+	private fun preChar(index: Int = 1): Char? {
+//		return if (pointer == index - 1) null else code[pointer - index]
+		var prevCount = 0
+		var backPointer = 0
+		while (prevCount < index) {
+			backPointer++
+			if (pointer - backPointer < 0) {
+				return null
+			}
+			if (!code[pointer - backPointer].isWhitespace()) {
+				prevCount++
+			}
+		}
+		return code[pointer - backPointer]
+	}
 
 	private fun proChar(index: Int = 1): Char? = if (pointer + index < code.length) code[pointer + index] else null
 
@@ -174,5 +199,6 @@ enum class TokenType(val char: Char?, val complex: Boolean) {
 	TYPE_INDICATOR(':', false),
 	STRING_LITERAL('"', true),
 	INCLUSIVE_INTERVAL(null, true),
-	EXCLUSIVE_INTERVAL(null, true)
+	EXCLUSIVE_INTERVAL(null, true),
+	COMMENT('#', true)
 }

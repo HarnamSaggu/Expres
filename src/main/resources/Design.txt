@@ -126,16 +126,16 @@ Expres ====
 			. STRING LITERAL, """                                                      ####
 			. INCLUSIVE INTERVAL, "..."                                                ####
          . EXCLUSIVE INTERVAL, "../"                                                ####
+         . COMMENT, "#"                                                             ####
 			
 		Feature conversions ====
-		   . variables -> [VARIABLE MUTATOR] [KEYWORD] [SEMICOLON]
-		               -> [VARIABLE MUTATOR] [KEYWORD] [COMMA] [...additional tokens treated as value...] [SEMICOLON]
-		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [SEMICOLON]
-		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [COMMA] [...additional tokens treated as value...] [SEMICOLON]
+		   . variables -> [VARIABLE MUTATOR] [KEYWORD] [COMMA] [...value...]
+		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD]
+		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [COMMA] [...value...]
 
-       	. arrays    -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [SEMICOLON]
-       	            -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [SEMICOLON]
-       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [COMMA] [...additional tokens treated as value...][SEMICOLON]
+       	. arrays    -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
+       	            -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
+       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [COMMA] [...value...]
 
        	. snippet
 
