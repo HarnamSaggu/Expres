@@ -114,11 +114,12 @@ private class Lexer(sourceCode: String) {
 			if (char() == '#') {
 				value = ""
 				inc()
-				while (char() != ';' || char() != null) {
+				while (char() != ';' && char() != null) {
 					value += char()
 					inc()
 				}
 				appendToken(tokenType = TokenType.COMMENT)
+				continue
 			}
 
 			for (tokenType in TokenType.values()) {

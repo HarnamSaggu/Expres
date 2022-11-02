@@ -84,12 +84,12 @@ Expres ====
 
 		====
 
-		Function ====
+		[Function ====
 			"
 			> functionName(dataType: parameterName, ...), {code}
 			"
 
-			the rest is TODO
+			the rest is TODO, custom functions will be dealt with last]
 
 
 	Lexer & Parser init notes ====
@@ -134,7 +134,7 @@ Expres ====
 		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [COMMA] [...value...]
 
        	. arrays    -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
-       	            -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
+       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [TYPE INDICATOR] [KEYWORD]
        	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [COMMA] [...value...]
 
        	. snippet
