@@ -1,3 +1,5 @@
+package expres
+
 fun lex(sourceCode: String): List<Token> = Lexer(sourceCode).tokens().toList()
 
 private class Lexer(sourceCode: String) {
@@ -118,7 +120,7 @@ private class Lexer(sourceCode: String) {
 					value += char()
 					inc()
 				}
-				appendToken(tokenType = TokenType.COMMENT)
+				inc()
 				continue
 			}
 
@@ -200,6 +202,5 @@ enum class TokenType(val char: Char?, val complex: Boolean) {
 	TYPE_INDICATOR(':', false),
 	STRING_LITERAL('"', true),
 	INCLUSIVE_INTERVAL(null, true),
-	EXCLUSIVE_INTERVAL(null, true),
-	COMMENT('#', true)
+	EXCLUSIVE_INTERVAL(null, true)
 }

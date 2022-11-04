@@ -92,7 +92,7 @@ Expres ====
 			the rest is TODO, custom functions will be dealt with last]
 
 
-	Lexer & Parser init notes ====
+	expres.Lexer & expres.Parser init notes ====
 		Tokens ====
 			. KEYWORD, any string starting with letters which isn't a string literal   ####
 			. VARIABLE MUTATOR, ">" # ONLY IF AT THE START OF A 'LINE'                 ####
@@ -126,22 +126,22 @@ Expres ====
 			. STRING LITERAL, """                                                      ####
 			. INCLUSIVE INTERVAL, "..."                                                ####
          . EXCLUSIVE INTERVAL, "../"                                                ####
-         . COMMENT, "#"                                                             ####
-			
-		Feature conversions ====
-		   . variables -> [VARIABLE MUTATOR] [KEYWORD] [COMMA] [...value...]
-		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD]
-		               -> [VARIABLE MUTATOR] [KEYWORD] [TYPE INDICATOR] [KEYWORD] [COMMA] [...value...]
 
-       	. arrays    -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX]
-       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [TYPE INDICATOR] [KEYWORD]
-       	            -> [VARIABLE MUTATOR] [KEYWORD] [OPEN INDEX] [CLOSE INDEX] [COMMA] [...value...]
+		Commands ====
+			The parser will take a sentence (a list of tokens typically between semicolons) and then match it
+			with a command.
 
-       	. snippet
+			Command types ====
+				. VARIABLE ASSIGNMENT WITH VALUE
+				. ARRAY ASSIGNMENT WITH SIZE
+				. ARRAY ASSIGNMENT
+				. ARRAY ELEMENT ASSIGNMENT WITH VALUE
+				. FUNCTION CALL
+				(commands which are inherently returns of a value)
+				. VARIABLE GETTER
+				. ARRAY ELEMENT GETTER
+				. OPERATION
 
-       	. if
-
-       	. for
-
-       	. while
-
+		Bracket number ====
+			Within a function call, the argument tokens are assigned a bracket number which corresponds
+			with the number of open brackets preceding them
