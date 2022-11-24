@@ -89,18 +89,18 @@ Expres ====
 			> functionName(dataType: parameterName, ...), {code}
 			"
 
-			the rest is TODO, custom functions will be dealt with last]
+			the rest is TODO, custom functions will be dealt with last
 
 
-	expres.Lexer & expres.Parser init notes ====
+	Lexer & Parser init notes ====
 		Tokens ====
-			. KEYWORD, any string starting with letters which isn't a string literal   ####
-			. VARIABLE MUTATOR, ">" # ONLY IF AT THE START OF A 'LINE'                 ####
-			. COMMA, ","                                                               ####
-			. SEMICOLON, break ";"                                                     ####
-			. SNIPPET START, "{"                                                       ####
-			. SNIPPET END, "}"                                                         ####
-			. NUMBER, anything string not in a string literal starting with a digit    ####
+			. KEYWORD, any string starting with letters which isn't a string literal     ####
+			. VARIABLE MUTATOR, ">" # ONLY IF AT THE START OF A 'LINE'                   ####
+			. COMMA, ","                                                                 ####
+			. SEMICOLON, break ";"                                                       ####
+			. SNIPPET START, "{"                                                         ####
+			. SNIPPET END, "}"                                                           ####
+			. NUMBER, anything string not in a string literal starting with a digit      ####
 			. Operators ====
 				. Maths ====
 					. PLUS, "+"                                                          ####
@@ -118,29 +118,54 @@ Expres ====
 					. NOT, "!"                                                           ####
 					. OR, "|"                                                            ####
 					. AND, "&"                                                           ####
-			. OPEN BRACKET, "("                                                        ####
-			. CLOSE BRACKET, ")"                                                       ####
-			. OPEN INDEX, "["                                                          ####
-			. CLOSE INDEX, "]"                                                         ####
-			. TYPE INDICATOR, ":"                                                      ####
-			. STRING LITERAL, """                                                      ####
-			. INCLUSIVE INTERVAL, "..."                                                ####
-         . EXCLUSIVE INTERVAL, "../"                                                ####
+			. OPEN BRACKET, "("                                                          ####
+			. CLOSE BRACKET, ")"                                                         ####
+			. OPEN INDEX, "["                                                            ####
+			. CLOSE INDEX, "]"                                                           ####
+			. TYPE INDICATOR, ":"                                                        ####
+			. STRING LITERAL, """                                                        ####
+			. INCLUSIVE INTERVAL, "..."                                                  ####
+         . EXCLUSIVE INTERVAL, "../"                                                     ####
 
 		Commands ====
 			The parser will take a sentence (a list of tokens typically between semicolons) and then match it
 			with a command.
 
 			Command types ====
-				. VARIABLE ASSIGNMENT WITH VALUE
-				. ARRAY ASSIGNMENT WITH SIZE
-				. ARRAY ASSIGNMENT
-				. ARRAY ELEMENT ASSIGNMENT WITH VALUE
-				. FUNCTION CALL
+				0.[0]. VARIABLE ASSIGNMENT WITH VALUE
+				        - name
+				        - value (commands)
+				0.[1]. ARRAY ASSIGNMENT WITH SIZE
+				        - name
+				        - size (commands)
+				0.[3]. ARRAY ASSIGNMENT
+				        - name
+				0.[3]. ARRAY ELEMENT ASSIGNMENT
+				        - name
+				        - value (commands)
+
+				1.[4]. FUNCTION CALL
+				        - name
+				        - arguments (commands)
+
 				(commands which are inherently returns of a value)
-				. VARIABLE GETTER
-				. ARRAY ELEMENT GETTER
-				. OPERATION
+				2.[5]. VARIABLE GETTER
+				        - name
+				2.[6]. ARRAY ELEMENT GETTER
+				        - name
+				        - index
+
+				3.[7]. OPERATION
+				        - first operand (commands)
+				        - operator (name)
+				        - second operand (commands) (except for NOT)
+
+		    Command data structure ====
+		        They all have names
+		        Then we can split 0-3 into assigment subtype
+		        Function call is unique
+		        Getters can be one subtype
+		        Operation is also unique
 
 		Bracket number ====
 			Within a function call, the argument tokens are assigned a bracket number which corresponds

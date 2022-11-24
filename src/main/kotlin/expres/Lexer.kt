@@ -36,8 +36,8 @@ private class Lexer(sourceCode: String) {
 					appendToken(tokenType = TokenType.GREATER_EQUAL_THAN, incAmount = 2)
 					continue
 				} else {
-					type = if (preChar() == ';'|| preChar() == '{' || preChar() == null) {
-						TokenType.VARIABLE_MUTATOR
+					type = if (preChar() == ';' || preChar() == '{' || preChar() == null) {
+						TokenType.SETTER
 					} else {
 						TokenType.GREATER_THAN
 					}
@@ -143,9 +143,7 @@ private class Lexer(sourceCode: String) {
 
 	private fun char(index: Int = pointer): Char? = if (index < code.length) code[index] else null
 
-	// TODO make preChar() ignore whitespace
 	private fun preChar(index: Int = 1): Char? {
-//		return if (pointer == index - 1) null else code[pointer - index]
 		var prevCount = 0
 		var backPointer = 0
 		while (prevCount < index) {
@@ -175,7 +173,7 @@ data class Token(val type: TokenType, val value: String? = null) {
 enum class TokenType(val char: Char?, val complex: Boolean) {
 	UNDEFINED(null, true),
 	KEYWORD(null, true),
-	VARIABLE_MUTATOR('>', true),
+	SETTER('>', true),
 	COMMA(',', false),
 	SEMICOLON(';', false),
 	SNIPPET_START('{', false),
